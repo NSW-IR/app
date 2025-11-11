@@ -17,6 +17,6 @@
       ]
     }
   },
-  "postCreateCommand": "pip install -r requirements.txt && npm install -g @anthropic/claude-code || true",
+  "postCreateCommand": "pip install -r requirements.txt && npm install -g @anthropic-ai/claude-code || true",
   "remoteUser": "root"
 }

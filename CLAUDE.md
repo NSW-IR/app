@@ -30,11 +30,24 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Python 3.11 DevContainer環境。Streamlitを使用したWebアプリケーション開発用。
 
+## Project Structure
+
+```
+/workspaces/app/
+├── src/                    # ソースコードディレクトリ
+│   └── test/              # テストファイル用ディレクトリ
+├── docs/                   # ドキュメント
+│   └── assets/            # ドキュメント用アセット
+├── .devcontainer/          # DevContainer設定
+├── requirements.txt        # Python依存関係
+└── CLAUDE.md              # このファイル
+```
+
 ## Development Setup
 
 DevContainerが以下を自動的にセットアップします:
 - Python依存関係のインストール (`pip install -r requirements.txt`)
-- Claude Codeのグローバルインストール (`npm install -g @anthropic/claude-code`)
+- Claude Codeのグローバルインストール (`npm install -g @anthropic-ai/claude-code`)
 - Python interpreter: `/usr/local/bin/python`
 
 ## Common Commands
@@ -46,9 +59,17 @@ pip install -r requirements.txt
 
 ### Streamlitアプリケーションの実行
 ```bash
-streamlit run <your_app_file>.py
+streamlit run src/<your_app_file>.py
 ```
-注: プロジェクトにはまだメインアプリケーションファイルが作成されていません。
+
+### テストの実行
+```bash
+pytest src/test/
+```
+または個別のテストファイルを実行:
+```bash
+pytest src/test/<test_file>.py
+```
 
 ## Dependencies
 
