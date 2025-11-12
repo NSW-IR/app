@@ -28,7 +28,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Environment
 
-Python 3.11 DevContainer環境。Streamlitを使用したWebアプリケーション開発用。
+Python 3.11 DevContainer環境。Streamlit + Databricks開発用。
 
 ## Project Structure
 
@@ -37,7 +37,8 @@ Python 3.11 DevContainer環境。Streamlitを使用したWebアプリケーシ�
 ├── src/                    # ソースコードディレクトリ
 │   └── test/              # テストファイル用ディレクトリ
 ├── docs/                   # ドキュメント
-│   └── assets/            # ドキュメント用アセット
+│   ├── assets/            # ドキュメント用アセット
+│   └── ClaudeCodeガイド.md # Claude Code使用ガイド（日本語）
 ├── .devcontainer/          # DevContainer設定
 ├── requirements.txt        # Python依存関係
 └── CLAUDE.md              # このファイル
@@ -48,6 +49,7 @@ Python 3.11 DevContainer環境。Streamlitを使用したWebアプリケーシ�
 DevContainerが以下を自動的にセットアップします:
 - Python依存関係のインストール (`pip install -r requirements.txt`)
 - Claude Codeのグローバルインストール (`npm install -g @anthropic-ai/claude-code`)
+- Databricks CLIのインストール
 - Python interpreter: `/usr/local/bin/python`
 
 ## Common Commands
@@ -62,6 +64,21 @@ pip install -r requirements.txt
 streamlit run src/<your_app_file>.py
 ```
 
+### Databricks CLI
+```bash
+# Databricks認証設定
+databricks configure --token
+
+# Databricksワークスペースのリスト表示
+databricks workspace ls
+
+# ノートブックのエクスポート
+databricks workspace export <workspace_path> <local_path>
+
+# ジョブの実行
+databricks jobs run-now --job-id <job_id>
+```
+
 ### テストの実行
 ```bash
 pytest src/test/
@@ -73,4 +90,22 @@ pytest src/test/<test_file>.py
 
 ## Dependencies
 
-- streamlit (requirements.txtに記載)
+- streamlit (Webアプリケーションフレームワーク)
+- Databricks CLI (自動インストール済み)
+
+注: requirements.txtにpandas、numpyがコメントアウトされています。必要に応じてアンコメントしてください。
+
+## Git操作の重要な注意事項
+
+**必ずファイル変更前にgitステージングまたはコミットを行うこと**
+
+Claude Codeはファイルを直接編集します。gitにステージしていない状態で変更を行うと、元の状態に戻せなくなる可能性があります。作業前に必ず：
+```bash
+git status          # 変更状態を確認
+git add .           # 必要に応じてステージング
+git commit -m "..."  # コミット
+```
+
+## Documentation
+
+- `docs/ClaudeCodeガイド.md` - Claude Codeの詳細な使用方法、プロンプト例、ベストプラクティスが記載されています
