@@ -3,20 +3,18 @@ FROM python:3.11-slim
 
 # OS パッケージの更新と基本ツールのインストール
 RUN apt-get update && apt-get install -y \
-    git curl vim build-essential && \
+    git curl vim build-essential nodejs npm unzip && \
     rm -rf /var/lib/apt/lists/*
 
 # 作業ディレクトリを設定
 WORKDIR /workspace
 
-# Python ライブラリをインストール（requirements.txt がある場合）
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt || true
+# Pythonライブラリのインストール（requirements.txt がある場合のみ）
+COPY requirements.txt ./
+RUN if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.txt; fi
 
-# デフォルトのシェルをbashに設定
-CMD ["bash"]
+# Databricks CLI のインストール
+RUN bash -c "curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | bash"
 
-# Node.js と npm をインストール
-RUN apt-get update && apt-get install -y \
-    git curl vim build-essential nodejs npm && \
-    rm -rf /var/lib/apt/lists/*
+# デフォルトシェルをbashに設定
+CMD ["/bin/bash"]
