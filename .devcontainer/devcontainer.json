@@ -1,5 +1,5 @@
 {
-  "name": "Python",
+  "name": "Databricks-Python-Dev",
   "build": {
     "dockerfile": "Dockerfile",
     "context": ".."
@@ -7,17 +7,28 @@
   "customizations": {
     "vscode": {
       "settings": {
+        // ターミナルのデフォルトシェルを bash に
         "terminal.integrated.defaultProfile.linux": "bash",
-        "python.defaultInterpreterPath": "/usr/local/bin/python"
+
+        // Python 仮想環境をデフォルトに設定
+        "python.defaultInterpreterPath": "/workspace/.venv/bin/python",
+
+        // Lint / Format設定（任意）
+        "python.formatting.provider": "black",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": true
       },
       "extensions": [
         "ms-python.python",
         "ms-toolsai.jupyter",
         "ms-azuretools.vscode-docker",
-        "databricks.databricks-vscode"
+        "databricks.databricks-vscode",
+        "GitHub.copilot",
+        "GitHub.copilot-chat"
       ]
     }
   },
-  "postCreateCommand": "pip install -r requirements.txt && npm install -g @anthropic-ai/claude-code || true",
+  // venv を前提にパッケージをインストール
+  "postCreateCommand": ". /workspace/.venv/bin/activate && pip install -r requirements.txt && npm install -g @anthropic-ai/claude-code || true",
   "remoteUser": "root"
 }

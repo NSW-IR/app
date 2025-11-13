@@ -9,12 +9,24 @@ RUN apt-get update && apt-get install -y \
 # 作業ディレクトリを設定
 WORKDIR /workspace
 
-# Pythonライブラリのインストール（requirements.txt がある場合のみ）
-COPY requirements.txt ./
+# Python 仮想環境（venv）の作成
+RUN python -m venv /workspace/.venv
+
+# venv を有効化して pip を最新化
+RUN . /workspace/.venv/bin/activate && pip install --upgrade pip
+
+# 環境変数でデフォルトPythonパスを venv に切り替え
+ENV PATH="/workspace/.venv/bin:$PATH"
+
+# Python ライブラリのインストール
+COPY requirements.txt ./ 
 RUN if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.txt; fi
 
 # Databricks CLI のインストール
 RUN bash -c "curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | bash"
+
+# Databricks Connect のインストール
+RUN pip install databricks-connect
 
 # デフォルトシェルをbashに設定
 CMD ["/bin/bash"]
